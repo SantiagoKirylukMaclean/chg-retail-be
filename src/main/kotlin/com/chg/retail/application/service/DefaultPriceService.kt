@@ -10,15 +10,11 @@ import org.springframework.stereotype.Service
 class DefaultPriceService(private val priceRepository: PriceRepository) : PriceService {
 
     override fun findApplicablePrice(query: PriceQueryRequest): PriceResponse? {
-        val applicablePrices = priceRepository.findAllApplicablePrices(
+        return priceRepository.findApplicablePrice(
             brandId = query.brandId,
             productId = query.productId,
             date = query.applicationDate
-        )
-
-        return applicablePrices
-            .maxByOrNull { it.priority }
-            ?.toResponse()
+        )?.toResponse()
     }
 
     private fun Price.toResponse(): PriceResponse {

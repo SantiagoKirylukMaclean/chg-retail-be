@@ -36,9 +36,4 @@ interface JpaPriceRepository : JpaRepository<PriceEntity, Long> {
         @Param("productId") productId: Long,
         @Param("date") date: LocalDateTime
     ): List<PriceEntity>
-
-    fun findByBrandIdAndProductIdOrderByPriorityDesc(
-        brandId: Long,
-        productId: Long
-    ): List<PriceEntity>
 }

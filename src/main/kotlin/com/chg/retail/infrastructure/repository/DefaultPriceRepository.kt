@@ -23,11 +23,4 @@ class DefaultPriceRepository(private val jpaPriceRepository: JpaPriceRepository)
             date = date
         ).map { it.toDomain() }
     }
-
-    override fun findByBrandIdAndProductId(brandId: Long, productId: Long): List<Price> {
-        return jpaPriceRepository.findByBrandIdAndProductIdOrderByPriorityDesc(
-            brandId = brandId,
-            productId = productId
-        ).map { it.toDomain() }
-    }
 }
