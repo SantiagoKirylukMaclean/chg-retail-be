@@ -4,17 +4,23 @@ import com.chg.retail.application.dto.PriceQueryRequest
 import com.chg.retail.application.dto.PriceResponse
 import com.chg.retail.domain.model.Price
 import com.chg.retail.domain.repository.PriceRepository
+import com.chg.retail.domain.strategy.PriceDisambiguationStrategy
 import org.springframework.stereotype.Service
 
 @Service
-class DefaultPriceService(private val priceRepository: PriceRepository) : PriceService {
+class DefaultPriceService(
+    private val priceRepository: PriceRepository,
+    private val priceDisambiguationStrategy: PriceDisambiguationStrategy
+) : PriceService {
 
     override fun findApplicablePrice(query: PriceQueryRequest): PriceResponse? {
-        return priceRepository.findApplicablePrice(
+        val applicablePrices = priceRepository.findAllApplicablePrices(
             brandId = query.brandId,
             productId = query.productId,
             date = query.applicationDate
-        )?.toResponse()
+        )
+
+        return priceDisambiguationStrategy.selectPrice(applicablePrices)?.toResponse()
     }
 
     private fun Price.toResponse(): PriceResponse {

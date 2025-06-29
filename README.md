@@ -150,9 +150,10 @@ This architecture provides several benefits:
 ### Key Design Decisions
 
 1. **Price Selection Logic**: 
-   - Initially implemented in the repository layer, but later refactored to the service layer
-   - This follows the Single Responsibility Principle by keeping data access separate from business rules
-   - The service now uses Kotlin's functional programming features (`maxByOrNull`) to select the price with the highest priority
+   - Implemented using the Strategy pattern to make the disambiguation rule explicit and maintainable
+   - The `PriceDisambiguationStrategy` interface defines the contract for price selection
+   - The `HighestPriorityPriceDisambiguationStrategy` implementation selects the price with the highest priority
+   - This approach follows the Open/Closed Principle, allowing new strategies to be added without modifying existing code
 
 2. **Exception Handling**:
    - Centralized in `GlobalExceptionHandler` to provide consistent error responses
